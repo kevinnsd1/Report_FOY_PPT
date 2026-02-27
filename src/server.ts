@@ -124,9 +124,15 @@ app.post('/generateReporting', async (req, res) => {
 
         // Return JSON Response
         res.json({
-            message: "Generate berhasil",
-            filename: filename,
-            downloadUrl: `${dynamicBaseUrl}/download/${filename}`
+            success: true,
+            data: {
+                success: true,
+                filename: filename,
+                path: savePath, // Absolute path on the server/local machine
+                downloadUrl: `${dynamicBaseUrl}/download/${filename}`,
+                message: "PPT berhasil dibuat"
+            },
+            message: "PPT berhasil dibuat"
         });
 
     } catch (error) {
