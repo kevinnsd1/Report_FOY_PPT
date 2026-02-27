@@ -49,7 +49,9 @@ app.post('/upload-logo', upload.single('logo'), (req, res) => {
         return res.status(400).json({ error: 'No file uploaded' });
     }
 
-    const fileUrl = `${BASE_URL}/download/uploads/${req.file.filename}`;
+    // Use environment BASE_URL if defined, otherwise derive from request context
+    const dynamicBaseUrl = process.env.BASE_URL || `${req.protocol}://${req.get('host')}`;
+    const fileUrl = `${dynamicBaseUrl}/download/uploads/${req.file.filename}`;
 
     res.json({
         message: 'Logo uploaded successfully',
@@ -117,11 +119,14 @@ app.post('/generateReporting', async (req, res) => {
 
         console.log(`PPT saved to ${savePath}`);
 
+        // Use environment BASE_URL if defined, otherwise derive from request context
+        const dynamicBaseUrl = process.env.BASE_URL || `${req.protocol}://${req.get('host')}`;
+
         // Return JSON Response
         res.json({
             message: "Generate berhasil",
             filename: filename,
-            downloadUrl: `${BASE_URL}/download/${filename}`
+            downloadUrl: `${dynamicBaseUrl}/download/${filename}`
         });
 
     } catch (error) {
